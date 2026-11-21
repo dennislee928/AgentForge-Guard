@@ -3,3 +3,4 @@
 .agentforge/audit/
 .DS_Store
 node_modules/
+local.env
