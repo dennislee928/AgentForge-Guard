@@ -59,8 +59,17 @@ target() {
 
 latest() {
   [ -z "${AFG_BASE_URL:-}" ] || die "set AFG_VERSION when AFG_BASE_URL is overridden"
-  url=$(curl -fsSLI -o /dev/null -w '%{url_effective}' "https://github.com/$REPO/releases/latest") \
-    || die "could not resolve the latest release; set AFG_VERSION"
+  # releases/latest redirects to releases/tag/v<version>.
+  if command -v curl >/dev/null 2>&1; then
+    url=$(curl -fsSLI -o /dev/null -w '%{url_effective}' "https://github.com/$REPO/releases/latest") \
+      || die "could not resolve the latest release; set AFG_VERSION"
+  elif command -v wget >/dev/null 2>&1; then
+    url=$(wget -S --spider -q "https://github.com/$REPO/releases/latest" 2>&1 \
+      | sed -n 's/^ *[Ll]ocation: *//p' | tail -n 1 | tr -d '\r')
+    [ -n "$url" ] || die "could not resolve the latest release; set AFG_VERSION"
+  else
+    die "curl or wget is required"
+  fi
   v=${url##*/tag/v}
   [ "$v" != "$url" ] || die "no stable release found; set AFG_VERSION (e.g. 1.0.0-rc.1)"
   printf '%s' "$v"

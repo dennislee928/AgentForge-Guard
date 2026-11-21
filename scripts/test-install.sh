@@ -19,8 +19,11 @@ rel="$work/release/v$v"
 mkdir -p "$rel" "$work/stage/afg-v$v-$t"
 printf '#!/bin/sh\necho "fake afg $*"\n' >"$work/stage/afg-v$v-$t/afg"
 chmod 755 "$work/stage/afg-v$v-$t/afg"
-tar czf "$rel/afg-v$v-$t.tar.gz" -C "$work/stage" "afg-v$v-$t"
-(cd "$rel" && { sha256sum ./*.tar.gz 2>/dev/null || shasum -a 256 ./*.tar.gz; } | sed 's# \./# #' >SHA256SUMS)
+mkrelease() { # a valid release: archive + SHA256SUMS
+  tar czf "$rel/afg-v$v-$t.tar.gz" -C "$work/stage" "afg-v$v-$t"
+  (cd "$rel" && { sha256sum ./*.tar.gz 2>/dev/null || shasum -a 256 ./*.tar.gz; } | sed 's# \./# #' >SHA256SUMS)
+}
+mkrelease
 
 run() { # extra env...
   env PATH="/usr/bin:/bin" AFG_BASE_URL="file://$work/release" AFG_VERSION="$v" "$@" sh "$root/install.sh"
@@ -42,8 +45,15 @@ grep -q "checksum mismatch" "$work/log" || fail "no checksum mismatch message"
 if run AFG_INSTALL_DIR="$work/bin3" 2>"$work/log"; then fail "unlisted archive was installed"; fi
 grep -q "not listed in SHA256SUMS" "$work/log" || fail "no unlisted message"
 
-# 4. Required signature without cosign: refused.
-if run AFG_INSTALL_DIR="$work/bin4" AFG_REQUIRE_COSIGN=1 2>"$work/log"; then fail "installed without required cosign"; fi
+# 4. Required signature without cosign: refused by the cosign guard, on an otherwise valid release.
+mkrelease
+if PATH="/usr/bin:/bin" command -v cosign >/dev/null 2>&1; then
+  echo "skip 4: cosign is on the minimal PATH"
+else
+  if run AFG_INSTALL_DIR="$work/bin4" AFG_REQUIRE_COSIGN=1 2>"$work/log"; then fail "installed without required cosign"; fi
+  grep -q "AFG_REQUIRE_COSIGN=1 but cosign is not installed" "$work/log" || { cat "$work/log"; fail "no required-cosign message"; }
+  [ ! -e "$work/bin4/afg" ] || fail "binary installed without required cosign"
+fi
 
 # 5. Shell-metacharacter version: refused.
 if env PATH="/usr/bin:/bin" AFG_BASE_URL="file://$work/release" AFG_VERSION='1.0;id' AFG_INSTALL_DIR="$work/bin5" sh "$root/install.sh" 2>"$work/log"; then fail "bad version accepted"; fi
