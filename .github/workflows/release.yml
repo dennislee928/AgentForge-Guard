@@ -7,9 +7,14 @@ name: Release
 on:
   push:
     tags: ["v*.*.*"]
+    branches:
+      - main
+      - master
 
 permissions:
   contents: read
+
+
 
 jobs:
   verify:
