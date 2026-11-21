@@ -135,6 +135,19 @@ jobs:
           mkdir dist
           gh release download "${GITHUB_REF_NAME}" -R "${GITHUB_REPOSITORY}" -D dist -p 'afg-*.tar.gz' -p 'afg-*.zip' -p SHA256SUMS
           node packaging/npm/assemble.mjs dist "$version" out
+          # Idempotent, so a rerun can finish a partial publication: skip a package only when
+          # the registry confirms this exact version exists. A 404 means "not yet published";
+          # any other lookup error, and every publish error, fails the job.
+          publish() {
+            name=$(node -p 'require(process.argv[1]).name' "$1/package.json")
+            if found=$(npm view "$name@$version" version 2>"$RUNNER_TEMP/view.err"); then
+              if [ "$found" = "$version" ]; then echo "$name@$version already published; skipping"; return 0; fi
+            elif ! grep -q E404 "$RUNNER_TEMP/view.err"; then
+              cat "$RUNNER_TEMP/view.err" >&2; echo "registry lookup failed for $name@$version" >&2; return 1
+            fi
+            npm publish "$1" --provenance --access public --tag "$tag"
+          }
+          # Explicit ./ paths: npm reads `out/x` as a GitHub shorthand, not a directory.
           # Platform packages first, so the launcher's optionalDependencies resolve.
-          for d in out/agentforge-guard-*; do npm publish "$d" --provenance --access public --tag "$tag"; done
-          npm publish out/agentforge-guard --provenance --access public --tag "$tag"
+          for d in ./out/agentforge-guard-*; do publish "$d"; done
+          publish ./out/agentforge-guard
