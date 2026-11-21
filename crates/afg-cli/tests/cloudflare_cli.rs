@@ -7,7 +7,13 @@ mod mock_worker;
 use assert_cmd::Command;
 use mock_worker::MockWorker;
 
-const KEY_HEX: &str = "2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a2a";
+/// A fresh random signing key for each test, so no key material is hard-coded.
+fn test_key() -> (Vec<u8>, String) {
+    let mut key = vec![0u8; 32];
+    getrandom::fill(&mut key).unwrap();
+    let hex = key.iter().map(|b| format!("{b:02x}")).collect();
+    (key, hex)
+}
 
 fn repo(endpoint: &str, cap: u64) -> tempfile::TempDir {
     let d = tempfile::tempdir().unwrap();
@@ -29,20 +35,21 @@ fn repo(endpoint: &str, cap: u64) -> tempfile::TempDir {
     d
 }
 
-fn afg(dir: &std::path::Path) -> Command {
+fn afg(dir: &std::path::Path, key_hex: &str) -> Command {
     let mut c = Command::cargo_bin("afg").unwrap();
     c.current_dir(dir)
         .env("AFG_NO_TTY", "1")
-        .env("AFG_CLOUDFLARE_KEY", KEY_HEX);
+        .env("AFG_CLOUDFLARE_KEY", key_hex);
     c
 }
 
 #[test]
 fn routed_command_runs_remotely_with_cost_cap() {
-    let worker = MockWorker::start(vec![42; 32], 3);
+    let (key, key_hex) = test_key();
+    let worker = MockWorker::start(key, 3);
     let r = repo(&worker.url, 1);
     // The exit code comes back from the remote run.
-    afg(r.path())
+    afg(r.path(), &key_hex)
         .args(["run", "--", "sh", "check.sh"])
         .assert()
         .code(3);
@@ -56,14 +63,14 @@ fn routed_command_runs_remotely_with_cost_cap() {
     );
 
     // The second run in the same hour hits maxRunsPerHour: 1 before any upload.
-    afg(r.path())
+    afg(r.path(), &key_hex)
         .args(["run", "--", "sh", "check.sh"])
         .assert()
         .code(125)
         .stderr(predicates::str::contains("cost cap"));
     assert_eq!(worker.requests().len(), 1);
 
-    let out = afg(r.path())
+    let out = afg(r.path(), &key_hex)
         .args(["audit", "tail", "--json"])
         .output()
         .unwrap();
@@ -75,9 +82,13 @@ fn routed_command_runs_remotely_with_cost_cap() {
 
 #[test]
 fn doctor_and_missing_key() {
-    let worker = MockWorker::start(vec![42; 32], 0);
+    let (key, key_hex) = test_key();
+    let worker = MockWorker::start(key, 0);
     let r = repo(&worker.url, 10);
-    let out = afg(r.path()).args(["doctor", "--json"]).output().unwrap();
+    let out = afg(r.path(), &key_hex)
+        .args(["doctor", "--json"])
+        .output()
+        .unwrap();
     let v: serde_json::Value = serde_json::from_slice(&out.stdout).unwrap();
     let cf = v["backends"]
         .as_array()

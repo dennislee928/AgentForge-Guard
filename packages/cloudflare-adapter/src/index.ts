@@ -68,7 +68,9 @@ export default {
       }
       return json(200, await stub.run(parsed as ExecuteRequest));
     } catch (e) {
-      return json(500, { error: String(e) });
+      // Details stay in the Worker log; clients get a generic message.
+      console.error("sandbox request failed", e);
+      return json(500, { error: "internal error" });
     }
   },
 } satisfies ExportedHandler<Env>;
