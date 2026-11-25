@@ -311,16 +311,16 @@ The existing T15 security work and stable-release review gate remain in force.
 - [x] **T16.1** Define the HTTP evaluation contract and security boundary against the existing Rust engine; add this roadmap.
 - [x] **T16.2** Implement an authenticated, bounded, evaluation-only Rust HTTP gateway using `afg-core`; test allow, deny, approval, route, malformed input, trust changes and shared-fixture conformance. Never execute submitted commands.
 - [x] **T16.3** Create `packages/n8n-nodes-agentforge-guard` using the official node tooling and metadata, credentials, Policy Evaluate, Command Analyze and Security Validate; enforce transport/schema failures without fabricating an allow result.
-- [ ] **T16.4** Add unit/integration and package-artifact tests, CI checks and real self-hosted n8n installation/execution verification.
+- [x] **T16.4** Add unit/integration and package-artifact tests, CI checks and real self-hosted n8n installation/execution verification.
   - [x] **T16.4a** Unit, real HTTP/Rust and exact artifact tests, plus a pinned-runtime CI gate.
   - [x] **T16.4b** Observe the real n8n runtime and Linux isolation gate passing in CI (Docker Desktop is unavailable locally). Run `45641771911` passed with n8n 2.49.6.
 - [x] **T16.5** Add documented example workflows and gateway setup, including allow/deny branches and failure behavior.
-- [ ] **T16.6** Repair the pre-existing pnpm lockfile drift and assess development-tool advisories; apply compatible fixes or record explicit owner acceptance, preserving the security scan and build/lint/runtime compatibility.
+- [x] **T16.6** Repair the pre-existing pnpm lockfile drift and assess development-tool advisories; apply compatible fixes or record explicit owner acceptance, preserving the security scan and build/lint/runtime compatibility. See `docs/n8n-release-risk.md` and the full advisory JSON.
 - **Gate:** Rust DoD, node build/lint/tests, packed artifact checks and self-hosted n8n smoke test; then alignment commit.
 
 ### Phase 17 — Distribution
 - [ ] **T17.1** Add a separate, version-checked GitHub Actions release workflow with npm provenance; publish and verify `n8n-nodes-agentforge-guard@0.1.0`.
-  - [ ] **T17.1a** Separate tag/version check, full runtime release gate, provenance and GitHub release automation.
+  - [x] **T17.1a** Separate tag/version check, full runtime release gate, provenance and GitHub release automation. Includes retained audit/digest artifacts and manual deprecation rollback.
   - [ ] **T17.1b** Publish the integration tag after all gates pass; verify registry metadata and provenance.
 - [ ] **T17.2** Verify installation and execution of the published artifact in self-hosted n8n.
 - [ ] **T17.3** Confirm the actual NCNodes package page and record timestamped evidence.

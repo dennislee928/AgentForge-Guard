@@ -1,0 +1,791 @@
+{
+  "auditReportVersion": 2,
+  "vulnerabilities": {
+    "@asteasolutions/zod-to-openapi": {
+      "name": "@asteasolutions/zod-to-openapi",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "zod"
+      ],
+      "effects": [
+        "@n8n/api-types"
+      ],
+      "range": "<=8.0.0-beta.4",
+      "nodes": [
+        "node_modules/@asteasolutions/zod-to-openapi"
+      ],
+      "fixAvailable": false
+    },
+    "@browserbasehq/stagehand": {
+      "name": "@browserbasehq/stagehand",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "openai",
+        "zod"
+      ],
+      "effects": [
+        "@langchain/community"
+      ],
+      "range": "<=4.3.0",
+      "nodes": [
+        "node_modules/@browserbasehq/stagehand"
+      ],
+      "fixAvailable": false
+    },
+    "@langchain/classic": {
+      "name": "@langchain/classic",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "uuid"
+      ],
+      "effects": [
+        "@langchain/community",
+        "@n8n/ai-utilities"
+      ],
+      "range": "<=1.0.31",
+      "nodes": [
+        "node_modules/@langchain/classic"
+      ],
+      "fixAvailable": false
+    },
+    "@langchain/community": {
+      "name": "@langchain/community",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@browserbasehq/stagehand",
+        "@langchain/classic",
+        "uuid"
+      ],
+      "effects": [
+        "@n8n/ai-utilities"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/@langchain/community"
+      ],
+      "fixAvailable": false
+    },
+    "@n8n/ai-node-sdk": {
+      "name": "@n8n/ai-node-sdk",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@n8n/ai-utilities"
+      ],
+      "effects": [
+        "@n8n/node-cli"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/@n8n/ai-node-sdk"
+      ],
+      "fixAvailable": false
+    },
+    "@n8n/ai-utilities": {
+      "name": "@n8n/ai-utilities",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@langchain/classic",
+        "@langchain/community",
+        "@n8n/api-types",
+        "@n8n/backend-network",
+        "n8n-workflow",
+        "zod",
+        "zod-to-json-schema"
+      ],
+      "effects": [
+        "@n8n/ai-node-sdk"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/@n8n/ai-utilities"
+      ],
+      "fixAvailable": false
+    },
+    "@n8n/api-types": {
+      "name": "@n8n/api-types",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@asteasolutions/zod-to-openapi",
+        "@n8n/inbound-auth",
+        "@n8n/permissions",
+        "n8n-workflow",
+        "zod"
+      ],
+      "effects": [
+        "@n8n/ai-utilities",
+        "@n8n/decorators"
+      ],
+      "range": ">=0.3.0",
+      "nodes": [
+        "node_modules/@n8n/api-types"
+      ],
+      "fixAvailable": false
+    },
+    "@n8n/backend-common": {
+      "name": "@n8n/backend-common",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@n8n/config",
+        "@n8n/decorators",
+        "n8n-workflow",
+        "stream-json"
+      ],
+      "effects": [
+        "@n8n/backend-network"
+      ],
+      "range": ">=0.3.0",
+      "nodes": [
+        "node_modules/@n8n/backend-common"
+      ],
+      "fixAvailable": false
+    },
+    "@n8n/backend-network": {
+      "name": "@n8n/backend-network",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@n8n/backend-common",
+        "@n8n/config",
+        "n8n-workflow",
+        "qs",
+        "zod"
+      ],
+      "effects": [
+        "@n8n/ai-utilities"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/@n8n/backend-network"
+      ],
+      "fixAvailable": false
+    },
+    "@n8n/config": {
+      "name": "@n8n/config",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "zod"
+      ],
+      "effects": [
+        "@n8n/backend-common",
+        "@n8n/backend-network"
+      ],
+      "range": ">=1.36.0",
+      "nodes": [
+        "node_modules/@n8n/config"
+      ],
+      "fixAvailable": false
+    },
+    "@n8n/decorators": {
+      "name": "@n8n/decorators",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@n8n/api-types",
+        "@n8n/permissions",
+        "n8n-workflow"
+      ],
+      "effects": [
+        "@n8n/backend-common"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/@n8n/decorators"
+      ],
+      "fixAvailable": false
+    },
+    "@n8n/eslint-plugin-community-nodes": {
+      "name": "@n8n/eslint-plugin-community-nodes",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@typescript-eslint/typescript-estree",
+        "@typescript-eslint/utils",
+        "n8n-workflow"
+      ],
+      "effects": [
+        "@n8n/node-cli"
+      ],
+      "range": ">=0.11.0",
+      "nodes": [
+        "node_modules/@n8n/node-cli/node_modules/@n8n/eslint-plugin-community-nodes"
+      ],
+      "fixAvailable": false
+    },
+    "@n8n/expression-runtime": {
+      "name": "@n8n/expression-runtime",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "zod"
+      ],
+      "effects": [
+        "n8n-workflow"
+      ],
+      "range": ">=0.14.3",
+      "nodes": [
+        "node_modules/@n8n/expression-runtime"
+      ],
+      "fixAvailable": false
+    },
+    "@n8n/inbound-auth": {
+      "name": "@n8n/inbound-auth",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@n8n/permissions",
+        "n8n-workflow",
+        "zod"
+      ],
+      "effects": [
+        "@n8n/api-types"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/@n8n/inbound-auth"
+      ],
+      "fixAvailable": false
+    },
+    "@n8n/node-cli": {
+      "name": "@n8n/node-cli",
+      "severity": "high",
+      "isDirect": true,
+      "via": [
+        "@n8n/ai-node-sdk",
+        "@n8n/eslint-plugin-community-nodes",
+        "@oclif/core",
+        "rimraf",
+        "ts-morph",
+        "typescript-eslint"
+      ],
+      "effects": [],
+      "range": "*",
+      "nodes": [
+        "node_modules/@n8n/node-cli"
+      ],
+      "fixAvailable": false
+    },
+    "@n8n/permissions": {
+      "name": "@n8n/permissions",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "zod"
+      ],
+      "effects": [
+        "@n8n/api-types",
+        "@n8n/decorators",
+        "@n8n/inbound-auth"
+      ],
+      "range": ">=0.24.0",
+      "nodes": [
+        "node_modules/@n8n/permissions"
+      ],
+      "fixAvailable": false
+    },
+    "@oclif/core": {
+      "name": "@oclif/core",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "minimatch"
+      ],
+      "effects": [
+        "@n8n/node-cli"
+      ],
+      "range": "3.22.0 - 5.1.11",
+      "nodes": [
+        "node_modules/@oclif/core"
+      ],
+      "fixAvailable": false
+    },
+    "@ts-morph/common": {
+      "name": "@ts-morph/common",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "minimatch"
+      ],
+      "effects": [
+        "ts-morph"
+      ],
+      "range": "0.19.0 - 0.29.0",
+      "nodes": [
+        "node_modules/@ts-morph/common"
+      ],
+      "fixAvailable": false
+    },
+    "@typescript-eslint/eslint-plugin": {
+      "name": "@typescript-eslint/eslint-plugin",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "@typescript-eslint/type-utils",
+        "@typescript-eslint/utils"
+      ],
+      "effects": [
+        "typescript-eslint"
+      ],
+      "range": "6.16.0 - 8.72.2",
+      "nodes": [
+        "node_modules/@typescript-eslint/eslint-plugin"
+      ],
+      "fixAvailable": false
+    },
+    "@typescript-eslint/parser": {
+      "name": "@typescript-eslint/parser",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "@typescript-eslint/typescript-estree"
+      ],
+      "effects": [
+        "typescript-eslint"
+      ],
+      "range": "6.16.0 - 8.72.2",
+      "nodes": [
+        "node_modules/@typescript-eslint/parser"
+      ],
+      "fixAvailable": false
+    },
+    "@typescript-eslint/type-utils": {
+      "name": "@typescript-eslint/type-utils",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "@typescript-eslint/typescript-estree",
+        "@typescript-eslint/utils"
+      ],
+      "effects": [
+        "@typescript-eslint/eslint-plugin"
+      ],
+      "range": "6.16.0 - 8.72.2",
+      "nodes": [
+        "node_modules/@typescript-eslint/type-utils"
+      ],
+      "fixAvailable": false
+    },
+    "@typescript-eslint/typescript-estree": {
+      "name": "@typescript-eslint/typescript-estree",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "minimatch"
+      ],
+      "effects": [
+        "@n8n/eslint-plugin-community-nodes",
+        "@typescript-eslint/parser",
+        "@typescript-eslint/type-utils",
+        "@typescript-eslint/utils",
+        "typescript-eslint"
+      ],
+      "range": "6.16.0 - 8.72.2",
+      "nodes": [
+        "node_modules/@n8n/node-cli/node_modules/@typescript-eslint/typescript-estree",
+        "node_modules/@typescript-eslint/eslint-plugin/node_modules/@typescript-eslint/typescript-estree",
+        "node_modules/@typescript-eslint/parser/node_modules/@typescript-eslint/typescript-estree",
+        "node_modules/@typescript-eslint/type-utils/node_modules/@typescript-eslint/typescript-estree",
+        "node_modules/typescript-eslint/node_modules/@typescript-eslint/typescript-estree"
+      ],
+      "fixAvailable": false
+    },
+    "@typescript-eslint/utils": {
+      "name": "@typescript-eslint/utils",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "@typescript-eslint/typescript-estree"
+      ],
+      "effects": [
+        "@n8n/eslint-plugin-community-nodes",
+        "@typescript-eslint/eslint-plugin",
+        "@typescript-eslint/type-utils",
+        "typescript-eslint"
+      ],
+      "range": "6.16.0 - 8.72.2",
+      "nodes": [
+        "node_modules/@n8n/node-cli/node_modules/@typescript-eslint/utils",
+        "node_modules/@typescript-eslint/eslint-plugin/node_modules/@typescript-eslint/utils",
+        "node_modules/@typescript-eslint/type-utils/node_modules/@typescript-eslint/utils",
+        "node_modules/typescript-eslint/node_modules/@typescript-eslint/utils"
+      ],
+      "fixAvailable": false
+    },
+    "glob": {
+      "name": "glob",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1244013,
+          "name": "glob",
+          "dependency": "glob",
+          "title": "Glob: AbortSignal cancellation bypass allows post-timeout filesystem traversal",
+          "url": "https://github.com/advisories/GHSA-3g3m-2fjr-6pw4",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-400"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": ">=9.0.0 <=14.0.1"
+        },
+        "minimatch"
+      ],
+      "effects": [
+        "rimraf"
+      ],
+      "range": "9.0.0 - 14.0.1",
+      "nodes": [
+        "node_modules/rimraf/node_modules/glob"
+      ],
+      "fixAvailable": false
+    },
+    "minimatch": {
+      "name": "minimatch",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1244623,
+          "name": "minimatch",
+          "dependency": "minimatch",
+          "title": "minimatch has potential denial of service via globparts amplification",
+          "url": "https://github.com/advisories/GHSA-g3hv-75wg-m249",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-405"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": ">=7.0.0 <11.0.1"
+        }
+      ],
+      "effects": [
+        "@oclif/core",
+        "@ts-morph/common",
+        "@typescript-eslint/typescript-estree",
+        "glob"
+      ],
+      "range": "7.0.0 - 11.0.0",
+      "nodes": [
+        "node_modules/@n8n/node-cli/node_modules/minimatch",
+        "node_modules/@oclif/core/node_modules/minimatch",
+        "node_modules/@ts-morph/common/node_modules/minimatch",
+        "node_modules/@typescript-eslint/eslint-plugin/node_modules/minimatch",
+        "node_modules/@typescript-eslint/parser/node_modules/minimatch",
+        "node_modules/@typescript-eslint/type-utils/node_modules/minimatch",
+        "node_modules/rimraf/node_modules/minimatch",
+        "node_modules/typescript-eslint/node_modules/minimatch"
+      ],
+      "fixAvailable": false
+    },
+    "n8n-workflow": {
+      "name": "n8n-workflow",
+      "severity": "high",
+      "isDirect": true,
+      "via": [
+        "@n8n/expression-runtime",
+        "zod"
+      ],
+      "effects": [
+        "@n8n/ai-utilities",
+        "@n8n/api-types",
+        "@n8n/backend-common",
+        "@n8n/backend-network",
+        "@n8n/decorators",
+        "@n8n/eslint-plugin-community-nodes",
+        "@n8n/inbound-auth"
+      ],
+      "range": ">=1.76.0",
+      "nodes": [
+        "node_modules/n8n-workflow"
+      ],
+      "fixAvailable": false
+    },
+    "openai": {
+      "name": "openai",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "zod"
+      ],
+      "effects": [
+        "@browserbasehq/stagehand"
+      ],
+      "range": "4.55.0 - 5.23.2",
+      "nodes": [
+        "node_modules/openai"
+      ],
+      "fixAvailable": false
+    },
+    "qs": {
+      "name": "qs",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1243687,
+          "name": "qs",
+          "dependency": "qs",
+          "title": "qs : qs.stringify with arrayFormat 'comma' throws an uncaught TypeError on array elements carrying a non-callable own toString (DoS)",
+          "url": "https://github.com/advisories/GHSA-6pq8-jhm2-2vcw",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-248",
+            "CWE-704"
+          ],
+          "cvss": {
+            "score": 5.3,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+          },
+          "range": ">=6.7.0 <=6.16.0"
+        }
+      ],
+      "effects": [
+        "@n8n/backend-network"
+      ],
+      "range": "6.7.0 - 6.16.0",
+      "nodes": [
+        "node_modules/@n8n/backend-network/node_modules/qs"
+      ],
+      "fixAvailable": false
+    },
+    "rimraf": {
+      "name": "rimraf",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "glob"
+      ],
+      "effects": [
+        "@n8n/node-cli"
+      ],
+      "range": "4.2.0 - 6.1.3",
+      "nodes": [
+        "node_modules/rimraf"
+      ],
+      "fixAvailable": false
+    },
+    "stream-json": {
+      "name": "stream-json",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1164823,
+          "name": "stream-json",
+          "dependency": "stream-json",
+          "title": "stream-json: pick/ignore/filter/replace filters are O(depth²) on nested input — small crafted JSON blocks the event loop for seconds→minutes (DoS)",
+          "url": "https://github.com/advisories/GHSA-528h-pc64-c93x",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-407"
+          ],
+          "cvss": {
+            "score": 6.2,
+            "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<=3.4.0"
+        },
+        {
+          "source": 1241262,
+          "name": "stream-json",
+          "dependency": "stream-json",
+          "title": "stream-json: JSONC parser and verifier re-scan the whole accumulated comment on every input chunk",
+          "url": "https://github.com/advisories/GHSA-hqr4-qq8f-hg3x",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-407"
+          ],
+          "cvss": {
+            "score": 6.2,
+            "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<=3.5.0"
+        },
+        {
+          "source": 1241263,
+          "name": "stream-json",
+          "dependency": "stream-json",
+          "title": "stream-json has a prototype pollution issue: Assembler writes this.current[this.key] on plain objects",
+          "url": "https://github.com/advisories/GHSA-mjw6-4jj6-33hc",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 5.1,
+            "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:L"
+          },
+          "range": "<3.6.0"
+        }
+      ],
+      "effects": [
+        "@n8n/backend-common"
+      ],
+      "range": "<=3.5.0",
+      "nodes": [
+        "node_modules/@n8n/backend-common/node_modules/stream-json"
+      ],
+      "fixAvailable": false
+    },
+    "ts-morph": {
+      "name": "ts-morph",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "@ts-morph/common"
+      ],
+      "effects": [
+        "@n8n/node-cli"
+      ],
+      "range": "18.0.0 - 27.0.2",
+      "nodes": [
+        "node_modules/ts-morph"
+      ],
+      "fixAvailable": false
+    },
+    "typescript-eslint": {
+      "name": "typescript-eslint",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "@typescript-eslint/eslint-plugin",
+        "@typescript-eslint/parser",
+        "@typescript-eslint/typescript-estree",
+        "@typescript-eslint/utils"
+      ],
+      "effects": [
+        "@n8n/node-cli"
+      ],
+      "range": "<=8.72.2",
+      "nodes": [
+        "node_modules/typescript-eslint"
+      ],
+      "fixAvailable": false
+    },
+    "uuid": {
+      "name": "uuid",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1119441,
+          "name": "uuid",
+          "dependency": "uuid",
+          "title": "uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided",
+          "url": "https://github.com/advisories/GHSA-w5hq-g745-h8pq",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-787",
+            "CWE-1285"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N"
+          },
+          "range": "<11.1.1"
+        }
+      ],
+      "effects": [
+        "@langchain/classic",
+        "@langchain/community"
+      ],
+      "range": "<11.1.1",
+      "nodes": [
+        "node_modules/@langchain/classic/node_modules/uuid",
+        "node_modules/@langchain/community/node_modules/uuid"
+      ],
+      "fixAvailable": false
+    },
+    "zod": {
+      "name": "zod",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1243066,
+          "name": "zod",
+          "dependency": "zod",
+          "title": "Zod can exhaust memory while validating oversized constrained collections",
+          "url": "https://github.com/advisories/GHSA-mrhx-c7xc-m3w5",
+          "severity": "high",
+          "cwe": [
+            "CWE-770"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<4.6.6"
+        }
+      ],
+      "effects": [
+        "@asteasolutions/zod-to-openapi",
+        "@browserbasehq/stagehand",
+        "@n8n/ai-utilities",
+        "@n8n/api-types",
+        "@n8n/backend-network",
+        "@n8n/config",
+        "@n8n/expression-runtime",
+        "@n8n/inbound-auth",
+        "@n8n/permissions",
+        "n8n-workflow",
+        "openai",
+        "zod-to-json-schema"
+      ],
+      "range": "<4.6.6",
+      "nodes": [
+        "node_modules/zod"
+      ],
+      "fixAvailable": false
+    },
+    "zod-to-json-schema": {
+      "name": "zod-to-json-schema",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "zod"
+      ],
+      "effects": [
+        "@n8n/ai-utilities"
+      ],
+      "range": "<=3.24.6",
+      "nodes": [
+        "node_modules/zod-to-json-schema"
+      ],
+      "fixAvailable": false
+    }
+  },
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 16,
+      "high": 19,
+      "critical": 0,
+      "total": 35
+    },
+    "dependencies": {
+      "prod": 1,
+      "dev": 598,
+      "optional": 35,
+      "peer": 60,
+      "peerOptional": 0,
+      "total": 598
+    }
+  }
+}
