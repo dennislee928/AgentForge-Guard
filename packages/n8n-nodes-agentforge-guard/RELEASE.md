@@ -17,3 +17,9 @@ tarball-content/load check. The GitHub workflow publishes with npm provenance.
 Directory listings and official n8n verification are separate external outcomes.
 This release does not claim NCNodes/WorkflowNodes listing, n8n verification or
 stable Rust 1.0.0 security readiness.
+
+Known advisories remain in the official n8n development SDK dependency tree.
+The owner accepted that release-specific development risk; scan reports and
+rollback instructions are retained. The published node has no runtime
+dependencies. The full Security workflow is not claimed green. See
+`docs/n8n-release-risk.md` in this tag and the attached development advisory report.

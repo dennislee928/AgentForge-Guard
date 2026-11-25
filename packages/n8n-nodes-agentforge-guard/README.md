@@ -103,7 +103,7 @@ Evaluation uses the gateway's policy, filesystem and PATH. It is not an executio
 permit for another machine. Files and executable identities may change after
 evaluation. Use `afg run` on the actual execution host to re-evaluate and enforce
 approval, isolation and TOCTOU checks. Argv matching and workflow instructions
-are not security boundaries. See the [API contract](../../docs/n8n-api.md).
+are not security boundaries. See the [API contract](https://github.com/dennislee928/AgentForge-Guard/blob/n8n-v0.1.0/docs/n8n-api.md).
 
 ## Publication and verification
 
@@ -113,6 +113,9 @@ n8n verification requires publication through GitHub Actions with provenance
 and acceptance through the [Creator Portal](https://creators.n8n.io/nodes).
 Building, linting or installing a community node does not establish verification.
 Current evidence is maintained in the repository's `docs/n8n-status.md`.
+The owner accepted known advisories in the official development tools for this
+release, with retained scan reports and a manual deprecation rollback. The full
+Security scan is not claimed green. See [risk acceptance and rollback](https://github.com/dennislee928/AgentForge-Guard/blob/n8n-v0.1.0/docs/n8n-release-risk.md).
 
 ## License
 

@@ -65,6 +65,7 @@ test('packed Community Node installs and executes real n8n workflows', { timeout
   };
   const explained = JSON.parse(checked(binary, ['policy', 'explain', '--json', '--', 'git', 'status'], project));
   const gateway = spawn(binary, ['gateway', '--listen', '127.0.0.1:0', '--policy-hash', explained.policyHash], { cwd: project, env, stdio: ['ignore', 'pipe', 'pipe'] });
+  let jef;
   try {
     const baseUrl = await new Promise((resolve, reject) => {
       let output = '';
@@ -77,7 +78,10 @@ test('packed Community Node installs and executes real n8n workflows', { timeout
         if (match) { clearTimeout(timer); resolve(`http://${match[1]}`); }
       });
     });
-    const [packed] = JSON.parse(checked('npm', ['pack', '--json', '--ignore-scripts', '--offline', '--pack-destination', temp], root));
+    const published = process.env.AFG_N8N_PACKAGE;
+    if (published) assert.match(published, /^n8n-nodes-agentforge-guard@\d+\.\d+\.\d+(?:-[a-zA-Z0-9.-]+)?$/);
+    const packArgs = ['pack', ...(published ? [published] : ['--offline']), '--json', '--ignore-scripts', '--pack-destination', temp];
+    const [packed] = JSON.parse(checked('npm', packArgs, root));
     const nodesDir = path.join(home, '.n8n/nodes');
     fs.mkdirSync(nodesDir, { recursive: true });
     checked('npm', ['install', '--prefix', nodesDir, '--offline', '--ignore-scripts', '--legacy-peer-deps', '--no-audit', '--no-fund', path.join(temp, packed.filename)]);
@@ -98,6 +102,8 @@ test('packed Community Node installs and executes real n8n workflows', { timeout
       guard.parameters.argv = JSON.stringify(argv);
       if (operation) Object.assign(guard.parameters, operation);
       guard.credentials = { agentForgeGuardApi: { id: 'afgRuntimeCredential', name: 'FAKE test credential' } };
+      const jefNode = workflow.nodes.find(n => n.type === 'n8n-nodes-jef.jef');
+      if (jefNode) jefNode.credentials = { jefApi: { id: 'afgJefCredential', name: 'FAKE JEF test credential' } };
       const file = path.join(temp, `workflow-${sequence}.json`);
       fs.writeFileSync(file, JSON.stringify(workflow));
       checked(runtime, ['import:workflow', `--input=${file}`]);
@@ -129,9 +135,33 @@ test('packed Community Node installs and executes real n8n workflows', { timeout
     fs.writeFileSync(policy, original);
     importCredentials('FAKE-wrong-runtime-test-key-000000000');
     assert.ok(execute('policy-gate.json', ['git', 'status']).data.error);
+    importCredentials(key);
+    checked('npm', ['install', '--prefix', nodesDir, '--ignore-scripts', '--legacy-peer-deps', '--no-audit', '--no-fund', 'n8n-nodes-jef@0.2.0-rc.4']);
+    const jefRequests = path.join(temp, 'jef-requests.jsonl');
+    jef = spawn(process.execPath, [path.join(__dirname, 'fixtures/jef-contract-server.cjs'), jefRequests], { env, stdio: ['ignore', 'pipe', 'pipe'] });
+    const jefUrl = await new Promise((resolve, reject) => {
+      const timer = setTimeout(() => reject(new Error('JEF fixture startup timeout')), 10000);
+      jef.once('error', error => { clearTimeout(timer); reject(error); });
+      jef.stdout.on('data', chunk => { const match = String(chunk).match(/listening on (127\.0\.0\.1:\d+)/); if (match) { clearTimeout(timer); resolve(`http://${match[1]}`); } });
+    });
+    fs.writeFileSync(credentialsFile, JSON.stringify([{ id: 'afgJefCredential', name: 'FAKE JEF test credential', type: 'jefApi', data: { baseUrl: jefUrl, apiKey: 'FAKE-JEF-contract-test-key-0000000000' } }]));
+    checked(runtime, ['import:credentials', `--input=${credentialsFile}`]);
+    for (const argv of [['terraform', 'destroy'], ['kubectl', 'apply'], ['sh', '-c', 'echo example']]) {
+      const { data } = execute('jef-incident-review.json', argv);
+      assert.ok(data.error, 'JEF must never override the Guard decision');
+      assert.ok(data.runData['JEF - recommend a human review team']);
+      assert.ok(data.runData['Stop - JEF cannot override Guard']);
+      assert.ok(!data.runData['Allowed - re-evaluate with afg run before execution']);
+    }
+    const requests = fs.readFileSync(jefRequests, 'utf8').trim().split('\n').map(JSON.parse);
+    assert.deepEqual(requests.map(r => r.state.effect), ['deny', 'require-approval', 'route']);
+    assert.ok(requests.every(r => Object.keys(r.state).sort().join(',') === 'effect,policyHash,ruleId,source'));
+    assert.ok(!execute('jef-incident-review.json', ['git', 'status']).data.error);
+    assert.equal(fs.readFileSync(jefRequests, 'utf8').trim().split('\n').length, 3, 'allow does not send incidents');
     assert.ok(!fs.existsSync(path.join(project, 'MUST_NOT_EXIST')));
     console.log('n8n runtime: installed tarball, four decisions, validation, analyze, policy change and authentication verified');
   } finally {
+    if (jef) jef.kill('SIGINT');
     gateway.kill('SIGINT');
     await new Promise(resolve => { gateway.once('exit', resolve); setTimeout(() => { gateway.kill('SIGKILL'); resolve(); }, 2000).unref(); });
     fs.rmSync(temp, { recursive: true, force: true });

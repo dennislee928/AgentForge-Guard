@@ -21,6 +21,9 @@ The allow branch is a no-op. Re-evaluate using `afg run` on the execution host
 before any real execution. The gateway's filesystem and PATH can differ from the
 execution host, and evaluation does not bind later execution to the checked files.
 
-These templates do not automatically approve operations, send incidents, or
-execute commands. JEF integration requires its actual API contract and is tracked
-separately in `docs/plan.md`.
+`jef-incident-review.json` additionally uses `n8n-nodes-jef@0.2.0-rc.4`. Select a
+separate JEF API credential. Non-allow decisions send only four metadata fields
+for a review-team recommendation and then stop. JEF cannot override Guard. See
+`docs/n8n-jef.md` for the contract, setup and the mock-server test boundary.
+
+None of these templates approves an operation or executes the evaluated command.

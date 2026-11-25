@@ -1,0 +1,19 @@
+{
+  "name": "AgentForge Guard - JEF incident decision support",
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "nodes": [
+    { "id": "manual", "name": "Run manually", "type": "n8n-nodes-base.manualTrigger", "typeVersion": 1, "position": [0, 0], "parameters": {} },
+    { "id": "evaluate", "name": "Evaluate command", "type": "n8n-nodes-agentforge-guard.agentForgeGuard", "typeVersion": 1, "position": [240, 0], "parameters": { "resource": "policy", "operation": "evaluate", "argv": "[\"terraform\",\"destroy\"]", "requestedBackend": "policy" } },
+    { "id": "branch", "name": "Explicit allow only", "type": "n8n-nodes-base.if", "typeVersion": 2.2, "position": [480, 0], "parameters": { "conditions": { "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict", "version": 2 }, "conditions": [{ "id": "allow", "leftValue": "={{ $json.effect }}", "rightValue": "allow", "operator": { "type": "string", "operation": "equals" } }], "combinator": "and" }, "options": {} } },
+    { "id": "allow", "name": "Allowed - re-evaluate with afg run before execution", "type": "n8n-nodes-base.noOp", "typeVersion": 1, "position": [760, -120], "parameters": {} },
+    { "id": "jef", "name": "JEF - recommend a human review team", "type": "n8n-nodes-jef.jef", "typeVersion": 1, "position": [760, 120], "parameters": { "operation": "askMany", "state": "={{ JSON.stringify({ source: 'AgentForge Guard', effect: $json.effect, ruleId: $json.ruleId, policyHash: $json.policyHash }) }}", "questions": "{\"review_owner\":{\"type\":\"choice\",\"instructions\":\"Which team should review this blocked agent operation? This is decision support only, never permission to execute.\",\"criteria\":{\"soc\":\"Security monitoring and incident review\",\"appsec\":\"Application and agent security policy\",\"infra\":\"Infrastructure and deployment operations\"}}}" } },
+    { "id": "stop", "name": "Stop - JEF cannot override Guard", "type": "n8n-nodes-base.stopAndError", "typeVersion": 1, "position": [1040, 120], "parameters": { "errorMessage": "The command remains blocked. JEF provides review advice, never AgentForge Guard approval." } }
+  ],
+  "connections": {
+    "Run manually": { "main": [[{ "node": "Evaluate command", "type": "main", "index": 0 }]] },
+    "Evaluate command": { "main": [[{ "node": "Explicit allow only", "type": "main", "index": 0 }]] },
+    "Explicit allow only": { "main": [[{ "node": "Allowed - re-evaluate with afg run before execution", "type": "main", "index": 0 }], [{ "node": "JEF - recommend a human review team", "type": "main", "index": 0 }]] },
+    "JEF - recommend a human review team": { "main": [[{ "node": "Stop - JEF cannot override Guard", "type": "main", "index": 0 }]] }
+  }
+}
