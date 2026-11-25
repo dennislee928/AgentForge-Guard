@@ -1,0 +1,25 @@
+name: Observe n8n adoption
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 5 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  observe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Observe metadata and real aggregate download counts
+        run: node scripts/n8n-adoption.mjs metrics/n8n-adoption.jsonl
+      - uses: actions/upload-artifact@v4
+        with:
+          name: n8n-adoption-${{ github.run_id }}
+          path: metrics/n8n-adoption.jsonl
+          retention-days: 90
