@@ -50,7 +50,7 @@ Working rules for execution:
   - `afg-executor`: the `Executor` trait plus the `local` and `docker` backends.
   - `afg-report`: audit JSONL, redaction, SARIF.
   - `afg-cli`: the `afg` binary, using clap and tokio.
-- **TypeScript (`packages/`)** exists only from v0.4: `policy-types` (generated from JSON Schema) and `cloudflare-adapter`.
+- **TypeScript (`packages/`)** started in v0.4 with `policy-types` and `cloudflare-adapter`. The owner-approved n8n milestone adds an independently versioned HTTP integration; it never evaluates policy locally. The existing adoption worker remains separate.
 - **Evaluation pipeline:**
   1. Parse the request into `ExecutionRequest { argv, cwd, env_allowlist, timeout, limits, network, snapshot }`.
   2. **Normalize:**
@@ -350,6 +350,13 @@ The existing T15 security work and stable-release review gate remain in force.
 - **v0.4:** run the contract tests against the mocked Worker, plus the opt-in live run.
 
 ## Alignment log
+
+- 2026-11-25 — **Phase 16 aligned (n8n MVP).** Re-read architecture, T16 tasks and existing stable-release blockers. Rust fmt, clippy with denied warnings, workspace tests and cargo-deny pass. Official n8n build/lint and 8 node/artifact/HTTP integration tests pass. CI `45641771911` passed real n8n 2.49.6 tarball installation and workflow execution (four engine effects, Security Validate, Analyze, changed policy, invalid authentication) plus Linux Docker isolation. No deny/adversarial/isolation test was weakened.
+  - **Architecture:** `afg gateway` is an evaluation-only CLI module using axum and the same `afg-core`; fixed operator project/hash, authenticated and bounded requests, policy reload checks. The node has no runtime dependencies or native executables. Remote evaluation is advice, not an execution permit on a different host.
+  - **Environment deviation:** Docker Desktop cannot start locally; real n8n and isolation gates run on GitHub Linux. The real HTTP loopback test needs sandbox escalation locally. The owner re-trusted the pre-existing policy drift; no agent bypassed the denial.
+  - **Dependency deviation accepted by owner:** official n8n tooling brings upstream development advisories. Forced patched majors broke SDK APIs or official package lint and were reverted. The owner accepted this release-specific risk with retained logs and rollback; see `docs/n8n-release-risk.md` and `docs/n8n-development-audit.json`. Existing security scanning remains enabled and is not claimed green. Production artifact audit must pass. Fixed unrelated pre-existing pnpm adoption-worker lockfile drift.
+  - **Commit coordination:** the owner committed some source files concurrently; those commits are preserved. Task completion and phase alignment are recorded in separate Conventional Commits without rewriting history.
+  - **Release scope:** independent `n8n-v0.1.0`, with provenance, exact artifact hashes, retained reports and manual deprecation rollback. The immutable Rust/npm CLI `1.0.0-rc.6` is not republished; build the new gateway from the integration tag. Independent security review still gates stable Rust 1.0.0. External listings/verification/adoption remain open until evidenced.
 
 - 2026-11-19 — T0.1: `license` field in Cargo deferred to T0.5 (no `Cargo.toml` exists yet). LICENSE-APACHE uses the standard terms-only text (as in serde).
 - 2026-11-19 — **Phase 0 aligned.** Gate passed (build, fmt, clippy `-D warnings`, test, cargo-deny). Deviations and notes:
