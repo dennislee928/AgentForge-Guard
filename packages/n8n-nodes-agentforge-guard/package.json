@@ -4,14 +4,29 @@
   "description": "AI agent security policy evaluation for n8n workflows using the AgentForge Guard Rust engine",
   "license": "MIT",
   "homepage": "https://github.com/dennislee928/AgentForge-Guard/tree/main/packages/n8n-nodes-agentforge-guard",
-  "author": { "name": "Dennis Lee", "email": "55692615+dennislee928@users.noreply.github.com", "url": "https://github.com/dennislee928" },
+  "author": {
+    "name": "Dennis Lee",
+    "email": "55692615+dennislee928@users.noreply.github.com",
+    "url": "https://github.com/dennislee928"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dennislee928/AgentForge-Guard.git",
     "directory": "packages/n8n-nodes-agentforge-guard"
   },
-  "bugs": { "url": "https://github.com/dennislee928/AgentForge-Guard/issues" },
-  "keywords": ["n8n-community-node-package", "n8n", "agentforge-guard", "ai-security", "agent-security", "guardrails", "devsecops", "policy-engine"],
+  "bugs": {
+    "url": "https://github.com/dennislee928/AgentForge-Guard/issues"
+  },
+  "keywords": [
+    "n8n-community-node-package",
+    "n8n",
+    "agentforge-guard",
+    "ai-security",
+    "agent-security",
+    "guardrails",
+    "devsecops",
+    "policy-engine"
+  ],
   "files": [
     "dist/credentials/AgentForgeGuardApi.credentials.js",
     "dist/nodes/AgentForgeGuard/AgentForgeGuard.node.js",
@@ -33,16 +48,34 @@
   "n8n": {
     "n8nNodesApiVersion": 1,
     "strict": true,
-    "credentials": ["dist/credentials/AgentForgeGuardApi.credentials.js"],
-    "nodes": ["dist/nodes/AgentForgeGuard/AgentForgeGuard.node.js"]
+    "credentials": [
+      "dist/credentials/AgentForgeGuardApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/AgentForgeGuard/AgentForgeGuard.node.js"
+    ]
   },
-  "engines": { "node": ">=22.16" },
-  "publishConfig": { "access": "public" },
+  "engines": {
+    "node": ">=22.16"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "@n8n/node-cli": "0.58.6",
     "eslint": "9.39.4",
     "typescript": "5.9.3",
     "n8n-workflow": "2.49.4"
   },
-  "peerDependencies": { "n8n-workflow": "*" }
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  },
+  "overrides": {
+    "zod": "^4.6.6",
+    "stream-json": "^3.6.0",
+    "glob": "^14.0.2",
+    "minimatch": "^11.0.1",
+    "qs": "^6.16.1",
+    "uuid": "^11.1.1"
+  }
 }
