@@ -333,7 +333,7 @@ The existing T15 security work and stable-release review gate remain in force.
   - [x] **T18.1a** Prepare the review packet and disclose known limitations in `docs/n8n-verification-submission.md`.
   - [ ] **T18.1b** Owner-authenticated Creator Portal submission and external review outcome.
 - [ ] **T18.2** Publish AI agent security workflow templates with reproducible usage instructions.
-- [ ] **T18.3** Integrate JEF incident handling using its actual supported contract and verify a complete example flow.
+- [x] **T18.3** Integrate JEF incident handling using its actual supported contract and verify a complete example flow. CI `45644917094` installs the published JEF node and verifies the full n8n transport/branch flow against an explicitly fake contract server; live model inference/calibration is not claimed.
 - [ ] **T18.4** Track real npm adoption and third-party usage with reproducible observations; no synthetic downloads.
   - [x] **T18.4a** Tested metadata/download observer and weekly artifact workflow; unavailable data remains null, never fabricated zero.
   - [ ] **T18.4b** Record post-publication observations and independently attributable third-party usage, if any.

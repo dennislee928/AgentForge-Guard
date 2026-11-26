@@ -96,10 +96,20 @@ jobs:
       - name: Publish verified tarball with provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          RELEASE_VERSION: ${{ needs.verify.outputs.version }}
         run: |
           cd dist-n8n
           sha256sum --check SHA256SUMS
-          npm publish ./n8n-nodes-agentforge-guard-*.tgz --provenance --access public
+          if published_integrity=$(npm view "n8n-nodes-agentforge-guard@$RELEASE_VERSION" dist.integrity 2> registry-lookup.err); then
+            expected_integrity=$(node -e 'const fs=require("node:fs"),crypto=require("node:crypto"); process.stdout.write("sha512-" + crypto.createHash("sha512").update(fs.readFileSync(process.argv[1])).digest("base64"));' "./n8n-nodes-agentforge-guard-$RELEASE_VERSION.tgz")
+            test "$published_integrity" = "$expected_integrity" || { echo 'Published artifact differs; refusing to overwrite or reuse it'; exit 1; }
+            echo 'Identical immutable version already published; continuing verification'
+          elif grep -q E404 registry-lookup.err; then
+            npm publish ./n8n-nodes-agentforge-guard-*.tgz --provenance --access public
+          else
+            cat registry-lookup.err >&2
+            exit 1
+          fi
       - name: Verify public metadata
         run: npm view n8n-nodes-agentforge-guard name version keywords repository n8n dist.attestations --json
 

@@ -84,7 +84,8 @@ test('packed Community Node installs and executes real n8n workflows', { timeout
     const [packed] = JSON.parse(checked('npm', packArgs, root));
     const nodesDir = path.join(home, '.n8n/nodes');
     fs.mkdirSync(nodesDir, { recursive: true });
-    checked('npm', ['install', '--prefix', nodesDir, '--offline', '--ignore-scripts', '--legacy-peer-deps', '--no-audit', '--no-fund', path.join(temp, packed.filename)]);
+    checked('npm', ['install', '--prefix', nodesDir, ...(published ? [] : ['--offline']), '--ignore-scripts', '--legacy-peer-deps', '--no-audit', '--no-fund', published || path.join(temp, packed.filename)]);
+    if (published) checked('npm', ['audit', 'signatures', '--prefix', nodesDir]);
     const installed = JSON.parse(fs.readFileSync(path.join(nodesDir, 'node_modules/n8n-nodes-agentforge-guard/package.json')));
     assert.equal(installed.version, '0.1.0');
     const credentialsFile = path.join(temp, 'fake-credentials.json');
