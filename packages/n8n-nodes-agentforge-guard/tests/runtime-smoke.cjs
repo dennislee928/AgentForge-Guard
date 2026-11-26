@@ -87,7 +87,7 @@ test('packed Community Node installs and executes real n8n workflows', { timeout
     checked('npm', ['install', '--prefix', nodesDir, ...(published ? [] : ['--offline']), '--ignore-scripts', '--legacy-peer-deps', '--no-audit', '--no-fund', published || path.join(temp, packed.filename)]);
     if (published) checked('npm', ['audit', 'signatures', '--prefix', nodesDir]);
     const installed = JSON.parse(fs.readFileSync(path.join(nodesDir, 'node_modules/n8n-nodes-agentforge-guard/package.json')));
-    assert.equal(installed.version, '0.1.0');
+    assert.equal(installed.version, JSON.parse(fs.readFileSync(path.join(root, 'package.json'))).version);
     const credentialsFile = path.join(temp, 'fake-credentials.json');
     const importCredentials = apiKey => {
       fs.writeFileSync(credentialsFile, JSON.stringify([{ id: 'afgRuntimeCredential', name: 'FAKE test credential', type: 'agentForgeGuardApi', data: { baseUrl, apiKey } }]));

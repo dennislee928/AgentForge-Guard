@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-agentforge-guard",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "AI agent security policy evaluation for n8n workflows using the AgentForge Guard Rust engine",
   "license": "MIT",
   "homepage": "https://github.com/dennislee928/AgentForge-Guard/tree/main/packages/n8n-nodes-agentforge-guard",

@@ -1,4 +1,4 @@
-AgentForge Guard n8n integration 0.1.0 adds Policy Evaluate, Command Analyze and
+AgentForge Guard n8n integration 0.1.1 adds Policy Evaluate, Command Analyze and
 Security Validate using an authenticated HTTP gateway backed by `afg-core`.
 The package contains no native executables or runtime dependencies.
 
@@ -23,3 +23,7 @@ The owner accepted that release-specific development risk; scan reports and
 rollback instructions are retained. The published node has no runtime
 dependencies. The full Security workflow is not claimed green. See
 `docs/n8n-release-risk.md` in this tag and the attached development advisory report.
+
+The previous 0.1.0 tag was not published to npm: its release workflow invoked
+Rust formatting from the npm subdirectory without a manifest path. Version 0.1.1
+fixes that invocation and retains the failed tag and CI logs.
