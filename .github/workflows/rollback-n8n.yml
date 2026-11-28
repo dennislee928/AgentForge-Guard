@@ -36,7 +36,7 @@ jobs:
         env:
           ROLLBACK_VERSION: ${{ inputs.version }}
         run: npm view "n8n-nodes-agentforge-guard@$ROLLBACK_VERSION" name version deprecated dist --json > rollback-registry.json
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: n8n-rollback-registry
           path: rollback-registry.json

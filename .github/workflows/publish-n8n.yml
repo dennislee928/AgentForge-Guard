@@ -50,7 +50,7 @@ jobs:
           audit_status=0
           npm audit --json > development-audit.json || audit_status=$?
           echo "$audit_status" > development-audit-exit-code.txt
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: n8n-development-advisories
           path: |
@@ -66,7 +66,7 @@ jobs:
       - run: npm pack --ignore-scripts
       - name: Record exact artifact digest
         run: sha256sum n8n-nodes-agentforge-guard-*.tgz > SHA256SUMS
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: n8n-package
           path: |
