@@ -39,7 +39,7 @@
   "engines": { "node": ">=22.16" },
   "publishConfig": { "access": "public" },
   "devDependencies": {
-    "@n8n/node-cli": "0.58.6",
+    "@n8n/node-cli": "1.4.0",
     "eslint": "9.39.4",
     "typescript": "5.9.3",
     "n8n-workflow": "2.49.4"
