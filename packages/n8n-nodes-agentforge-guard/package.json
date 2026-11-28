@@ -40,7 +40,7 @@
   "publishConfig": { "access": "public" },
   "devDependencies": {
     "@n8n/node-cli": "0.58.6",
-    "eslint": "9.39.4",
+    "eslint": "10.15.0",
     "typescript": "5.9.3",
     "n8n-workflow": "2.49.4"
   },
